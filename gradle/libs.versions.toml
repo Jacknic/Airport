@@ -3,13 +3,21 @@ minSdk = "24"
 targetSdk = "34"
 compileSdk = "34"
 agp = "8.5.2"
-kotlin = "1.9.0"
+kotlin = "1.9.22"
 junit = "4.14-SNAPSHOT"
+ksp = "1.9.22-1.0.17"
+hilt = "2.48.1"
+casa = '0.5.1'
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+casa-ui = { module = "com.google.android.catalog.framework:casa-ui", version.ref = "casa" }
+casa-processor = { module = "com.google.android.catalog.framework:casa-processor", version.ref = "casa" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
