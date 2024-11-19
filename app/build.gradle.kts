@@ -69,7 +69,7 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    api(libs.casa.ui)
+    implementation(libs.casa.ui)
     ksp(libs.casa.processor)
 
     testImplementation(libs.junit)
