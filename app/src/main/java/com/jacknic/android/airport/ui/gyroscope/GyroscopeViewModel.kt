@@ -23,17 +23,26 @@ class GyroscopeViewModel(app: Application) : AndroidViewModel(app), SensorEventL
 
     private val sm = app.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val gyroscope = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+    private val accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
-    private val _values = MutableStateFlow<List<Float>>(emptyList())
-    val values = _values.asStateFlow()
+    private val _valuesGyro = MutableStateFlow<List<Float>>(emptyList())
+    val valuesGyro = _valuesGyro.asStateFlow()
+    private val _valuesAcc = MutableStateFlow<List<Float>>(emptyList())
+    val valuesAcc = _valuesAcc.asStateFlow()
 
     init {
         sm.registerListener(this, gyroscope, 1_000_000)
+        sm.registerListener(this, accelerometer, 1_000_000)
     }
 
     override fun onSensorChanged(event: SensorEvent) {
-        Log.d(TAG, "onSensorChanged: ${event.values.joinToString(",")}")
-        _values.value = event.values.toList()
+        Log.d(TAG, "onSensorChanged: ${event.sensor.name} ${event.values.joinToString(",")}")
+        val type = event.sensor.type
+        if (type == Sensor.TYPE_GYROSCOPE) {
+            _valuesGyro.value = event.values.toList()
+        } else if (type == Sensor.TYPE_ACCELEROMETER) {
+            _valuesAcc.value = event.values.toList()
+        }
     }
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
