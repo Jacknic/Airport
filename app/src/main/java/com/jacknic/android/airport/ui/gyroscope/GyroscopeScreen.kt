@@ -1,13 +1,18 @@
 package com.jacknic.android.airport.ui.gyroscope
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.catalog.framework.annotations.Sample
+import kotlin.math.sqrt
+
 
 @Sample(
     name = "陀螺仪数据",
@@ -18,19 +23,30 @@ import com.google.android.catalog.framework.annotations.Sample
 @Composable
 fun GyroscopeScreen() {
     val vm = hiltViewModel<GyroscopeViewModel>()
-    val values by vm.valuesGyro.collectAsState()
+    val valuesGyro by vm.valuesGyro.collectAsState()
     val valuesAcc by vm.valuesAcc.collectAsState()
     Column {
-        Text("陀螺数据")
-        Text("X=${values.getOrNull(0)}")
-        Text("Y=${values.getOrNull(1)}")
-        Text("Z=${values.getOrNull(2)}")
+        if (valuesGyro.isNotEmpty()) {
+            Text("陀螺仪数据")
+            val x = valuesGyro[0]
+            val y = valuesGyro[1]
+            val z = valuesGyro[2]
+            Text("X=$x")
+            Text("Y=$y")
+            Text("Z=$z")
+        }
+        HorizontalDivider(modifier = Modifier.height(10.dp))
 
-        HorizontalDivider()
-
-        Text("加速度传感器数据")
-        Text("X=${valuesAcc.getOrNull(0)}")
-        Text("Y=${valuesAcc.getOrNull(1)}")
-        Text("Z=${valuesAcc.getOrNull(2)}")
+        if (valuesAcc.isNotEmpty()) {
+            Text("加速度传感器数据")
+            val x = valuesAcc[0]
+            val y = valuesAcc[1]
+            val z = valuesAcc[2]
+            val magnitude = sqrt(x * x + y * y + z * z)
+            Text("X=$x")
+            Text("Y=$y")
+            Text("Z=$z")
+            Text("加速度=$magnitude")
+        }
     }
 }

@@ -31,8 +31,8 @@ class GyroscopeViewModel(app: Application) : AndroidViewModel(app), SensorEventL
     val valuesAcc = _valuesAcc.asStateFlow()
 
     init {
-        sm.registerListener(this, gyroscope, 1_000_000)
-        sm.registerListener(this, accelerometer, 1_000_000)
+        sm.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_UI)
+        sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
     }
 
     override fun onSensorChanged(event: SensorEvent) {
