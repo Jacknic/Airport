@@ -10,6 +10,8 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import java.util.LinkedList
 
 /**
  * 陀螺仪页面数据
@@ -29,6 +31,11 @@ class GyroscopeViewModel(app: Application) : AndroidViewModel(app), SensorEventL
     val valuesGyro = _valuesGyro.asStateFlow()
     private val _valuesAcc = MutableStateFlow<List<Float>>(emptyList())
     val valuesAcc = _valuesAcc.asStateFlow()
+    private val maxSize = 10
+    private val _valueQueue = MutableStateFlow(LinkedList<List<Float>>())
+    val valueQueue = _valueQueue.asStateFlow()
+    val valueAvgs = MutableStateFlow(emptyList<Double>())
+    val valueLast = MutableStateFlow(emptyList<Float>())
 
     init {
         sm.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_UI)
@@ -38,10 +45,23 @@ class GyroscopeViewModel(app: Application) : AndroidViewModel(app), SensorEventL
     override fun onSensorChanged(event: SensorEvent) {
         Log.d(TAG, "onSensorChanged: ${event.sensor.name} ${event.values.joinToString(",")}")
         val type = event.sensor.type
+        val newList = event.values.toList()
         if (type == Sensor.TYPE_GYROSCOPE) {
-            _valuesGyro.value = event.values.toList()
+            _valuesGyro.value = newList
+            _valueQueue.update {
+                if (it.size >= maxSize) {
+                    val sumX = it.sumOf { l -> l[0].toDouble() } / maxSize
+                    val sumY = it.sumOf { l -> l[1].toDouble() } / maxSize
+                    val sumZ = it.sumOf { l -> l[2].toDouble() } / maxSize
+                    valueAvgs.value = listOf(sumX, sumY, sumZ)
+                    it.pop()
+                }
+                valueLast.value = newList
+                it.add(newList)
+                it
+            }
         } else if (type == Sensor.TYPE_ACCELEROMETER) {
-            _valuesAcc.value = event.values.toList()
+            _valuesAcc.value = newList
         }
     }
 
