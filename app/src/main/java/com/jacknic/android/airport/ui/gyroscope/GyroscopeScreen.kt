@@ -1,9 +1,12 @@
 package com.jacknic.android.airport.ui.gyroscope
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +19,7 @@ import com.google.android.catalog.framework.annotations.Sample
 import kotlin.math.abs
 import kotlin.math.sqrt
 
+private const val TAG = "GyroscopeScreen"
 
 @Sample(
     name = "陀螺仪数据",
@@ -58,6 +62,18 @@ fun GyroscopeScreen() {
             val diffZ = abs(valueLast[2] - valueAvgs[2])
             val s = sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ)
             Text("方差值: X=%.3f, Y=%.3f, Z=%.3f, S=%.3f".format(diffX, diffY, diffZ, s))
+        }
+        Row {
+            Button(onClick = {
+                Log.w(TAG, "GyroscopeScreen: car start ====================")
+            }) {
+                Text("启动")
+            }
+            Button(onClick = {
+                Log.w(TAG, "GyroscopeScreen: car stop ===================")
+            }) {
+                Text("刹车")
+            }
         }
         if (valuesAcc.isNotEmpty()) {
             Text("加速度传感器数据")
