@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Airport</string>
+    <string name="source_base_url">https://github.com/jacknic/airport</string>
+    <string name="documentation_base_url">https://github.com/jacknic/airport</string>
+    <string name="bug_report_url">https://github.com/jacknic/airport/issues/new</string>
+    <string name="owner_base_url">https://github.com/jacknic</string>
 </resources>
