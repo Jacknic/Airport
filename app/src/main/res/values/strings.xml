@@ -4,4 +4,6 @@
     <string name="documentation_base_url">https://github.com/jacknic/airport</string>
     <string name="bug_report_url">https://github.com/jacknic/airport/issues/new</string>
     <string name="owner_base_url">https://github.com/jacknic</string>
+    <string name="placeholder_search">Search something</string>
+    <string name="ab1_inversions">Inversions</string>
 </resources>
